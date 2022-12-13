@@ -4,6 +4,10 @@ if (!localStorage.jwt) {
   location.replace('./')
 }
 
+window.onload = () => {
+  renderizarSkeletons(5, '.tareas-pendientes')
+}
+
 /* ------ comienzan las funcionalidades una vez que carga el documento ------ */
 window.addEventListener('load', function () {
   /* ---------------- variables globales y llamado a funciones ---------------- */
@@ -71,6 +75,7 @@ window.addEventListener('load', function () {
       .then(data => {
         console.log('cantidad de tareas')
         console.log(data)
+        removerSkeleton('.tareas-pendientes')
         renderizarTareas(data)
         botonesCambioEstado()
         botonBorrarTarea()
@@ -155,9 +160,7 @@ window.addEventListener('load', function () {
       } else {
         pendingTask.innerHTML += `
           <li class="tarea">
-            <button class="change" id="${
-              tarea.id
-            }"><i class="fa-regular fa-circle"></i></button>
+            <button class="change" id="${tarea.id}"><i class="fa-regular fa-circle"></i></button>
             <div class="descripcion">
               <p class="nombre">${tarea.description}</p>
               <p class="timestamp">${fecha.toLocaleDateString()}</p> 
@@ -243,3 +246,19 @@ window.addEventListener('load', function () {
     })
   }
 })
+
+/*
+  Esta función recibirá el nombre del contenedor dentro del cual
+  se encuentran los skeletons que deseamos remover
+*/
+function removerSkeleton(contenedor) {
+  // Seleccionamos el contenedor
+  const contenedorTareas = document.querySelector(contenedor)
+
+  // Seleccionamos todos los skeletons dentro de ese contenedor
+  const skeletons = document.querySelectorAll(`${contenedor}-child`)
+
+  // Iteramos sobre la lista de skeletons y removemos cada uno de ellos
+  // de dicho contenedor
+  skeletons.forEach(skeleton => contenedorTareas.removeChild(skeleton))
+}

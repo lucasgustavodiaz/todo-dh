@@ -28,6 +28,8 @@ window.addEventListener('load', function () {
       }
     }
 
+    mostrarSpinner()
+
     if (validarEmail(email.value) && validarTexto(password.value)) {
       realizarLogin(settings)
       form.reset()
@@ -50,6 +52,7 @@ window.addEventListener('load', function () {
       })
       .then(data => {
         if (data.jwt) {
+          ocultarSpinner()
           localStorage.setItem('jwt', JSON.stringify(data.jwt))
           location.replace('./mis-tareas.html')
         }
